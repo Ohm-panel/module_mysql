@@ -1,0 +1,8 @@
+# MySQL module
+
+name: Database (MySQL)
+tech_name: MySQL database management module
+description: Allows users to manage MySQL databases and users
+by_domain: false
+controller: mysql
+
