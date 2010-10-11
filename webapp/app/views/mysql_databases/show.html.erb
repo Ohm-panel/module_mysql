@@ -1,0 +1,13 @@
+<p>
+  <b>Mysql login:</b>
+  <%=h @mysql_database.mysql_login_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @mysql_database.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_mysql_database_path(@mysql_database) %> |
+<%= link_to 'Back', mysql_databases_path %>

@@ -1,0 +1,20 @@
+<h1>Editing mysql_database</h1>
+
+<% form_for(@mysql_database) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :mysql_login_id %><br />
+    <%= f.text_field :mysql_login_id %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @mysql_database %> |
+<%= link_to 'Back', mysql_databases_path %>

@@ -1,0 +1,40 @@
+<span class="frametitle"><%= mysql_login.username %></span>
+<div class="frame">
+<table class="indextable">
+<tr>
+  <th>Database</th>
+  <th>Actions</th>
+</tr>
+<% mysql_login.mysql_databases.each do |db| %>
+  <tr>
+    <td><%= db.name %></td>
+    <td>
+      <%= link_to (image_tag 'icons/icontexto-webdev-config-032x032.png', :alt => 'Edit', :title => 'Edit', :class => 'action'), :controller => 'mysql_databases', :action => 'edit', :id => db.to_param %>
+      <%= link_to (image_tag 'icons/icontexto-webdev-remove-032x032.png', :alt => 'Delete', :title => 'Delete', :class => 'action'), db, :confirm => 'ALL DATA in this database will be destroyed! Are you sure?', :method => :delete %>
+    </td>
+  </tr>
+<% end %>
+<% if mysql_login.mysql_databases.count==0 %>
+  <tr>
+    <td>No databases for this login, yet</td>
+  </tr>
+<% end %>
+</table>
+
+<br/>
+<% form_for(@database) do |f| %>
+  <%= f.error_messages %>
+
+  <%= f.label 'New database:' %>
+  <%= f.text_field :name %>
+
+  <%= f.hidden_field :mysql_login_id, :value => mysql_login.to_param %>
+
+  <%= f.submit 'Create' %>
+<% end %>
+
+<p>
+  <%= link_to (image_tag 'icons/icontexto-webdev-remove-032x032.png', :alt => '', :class => 'action') + 'Delete this login completely', mysql_login, :method => 'delete', :confirm => 'ALL DATABASES for this login will be destroyed! Are you sure?' %>
+</p>
+</div>
+

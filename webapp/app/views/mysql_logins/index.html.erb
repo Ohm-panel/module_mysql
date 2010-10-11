@@ -1,0 +1,18 @@
+<%= image_tag "icons/icontexto-webdev-site-map-128x128.png", :alt=>"", :class=>"bigicon" %>
+<h1>Your MySQL databases</h1>
+
+<p>
+  Databases quota usage: <%= print_quota @logged_mysql_user.used_databases_total, @logged_mysql_user.max_databases, '' %><br/>
+</p>
+
+<p>
+  <%= link_to (image_tag 'icons/icontexto-webdev-add-032x032.png', :alt => '', :class => 'action') + 'New login',
+              :controller => 'mysql_logins', :action => 'new' %>
+</p>
+
+<% if @logins.count > 0 %>
+  <%= render :partial => @logins %>
+<% else %>
+  <div class="frame">No logins yet</div>
+<% end %>
+
