@@ -1,7 +1,7 @@
 <%= image_tag "icons/icontexto-webdev-site-map-128x128.png", :alt=>"", :class=>"bigicon" %>
 <h1>New MySQL login</h1>
 
-<% form_for(@login) do |f| %>
+<% form_for(@login, :url => { :controller => 'mysql_logins', :action => 'create' }) do |f| %>
   <%= f.error_messages %>
 
   <p>

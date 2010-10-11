@@ -1,8 +1,7 @@
 <%= image_tag "icons/icontexto-webdev-site-map-128x128.png", :alt=>"", :class=>"bigicon" %>
 <h1>Editing <%= @database.name %></h1>
 
-<!-- , :url => { :controller => 'pureftpd_accounts', :action => 'update', :id => @account.id } -->
-<% form_for(@database) do |f| %>
+<% form_for(@database, :url => { :controller => 'mysql_databases', :action => 'update', :id => @database.id }) do |f| %>
   <%= f.error_messages %>
 
   <p>

@@ -9,8 +9,11 @@
   <tr>
     <td><%= db.name %></td>
     <td>
-      <%= link_to (image_tag 'icons/icontexto-webdev-config-032x032.png', :alt => 'Edit', :title => 'Edit', :class => 'action'), :controller => 'mysql_databases', :action => 'edit', :id => db.to_param %>
-      <%= link_to (image_tag 'icons/icontexto-webdev-remove-032x032.png', :alt => 'Delete', :title => 'Delete', :class => 'action'), db, :confirm => 'ALL DATA in this database will be destroyed! Are you sure?', :method => :delete %>
+      <%= link_to (image_tag 'icons/icontexto-webdev-config-032x032.png', :alt => 'Edit', :title => 'Edit', :class => 'action'),
+                   :controller => 'mysql_databases', :action => 'edit', :id => db.id %>
+      <%= link_to (image_tag 'icons/icontexto-webdev-remove-032x032.png', :alt => 'Delete', :title => 'Delete', :class => 'action'),
+                   {:controller => 'mysql_databases', :id => db.id, :action => 'destroy'},
+                   :confirm => 'ALL DATA in this database will be destroyed! Are you sure?' %>
     </td>
   </tr>
 <% end %>
@@ -22,19 +25,21 @@
 </table>
 
 <br/>
-<% form_for(@database) do |f| %>
+<% form_for(@database, :url => { :controller => 'mysql_databases', :action => 'create' }) do |f| %>
   <%= f.error_messages %>
 
   <%= f.label 'New database:' %>
   <%= f.text_field :name %>
 
-  <%= f.hidden_field :mysql_login_id, :value => mysql_login.to_param %>
+  <%= f.hidden_field :mysql_login_id, :value => mysql_login.id %>
 
   <%= f.submit 'Create' %>
 <% end %>
 
 <p>
-  <%= link_to (image_tag 'icons/icontexto-webdev-remove-032x032.png', :alt => '', :class => 'action') + 'Delete this login completely', mysql_login, :method => 'delete', :confirm => 'ALL DATABASES for this login will be destroyed! Are you sure?' %>
+  <%= link_to (image_tag 'icons/icontexto-webdev-remove-032x032.png', :alt => '', :class => 'action') + 'Delete this login completely',
+               {:controller => 'mysql_logins', :id => mysql_login.id, :action => 'destroy'},
+               :confirm => 'ALL DATABASES for this login will be destroyed! Are you sure?' %>
 </p>
 </div>
 
