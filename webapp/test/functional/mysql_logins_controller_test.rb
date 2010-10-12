@@ -18,44 +18,53 @@
 require 'test_helper'
 class MysqlLoginsControllerTest < ActionController::TestCase
   test "should get index" do
+    login_as users(:one)
     get :index
     assert_response :success
-    assert_not_nil assigns(:mysql_logins)
+    assert_not_nil assigns(:logins)
   end
 
   test "should get new" do
+    login_as users(:one)
     get :new
     assert_response :success
   end
 
   test "should create mysql_login" do
+    login_as users(:one)
     assert_difference('MysqlLogin.count') do
-      post :create, :mysql_login => { }
+      post :create, :mysql_login => { :username => 'new_user', :password => 'x', :password_confirmation => 'x' }
     end
 
-    assert_redirected_to mysql_login_path(assigns(:mysql_login))
-  end
-
-  test "should show mysql_login" do
-    get :show, :id => mysql_logins(:one).to_param
-    assert_response :success
+    assert_redirected_to :controller => 'mysql_logins', :action => 'index'
   end
 
   test "should get edit" do
+    login_as users(:one)
     get :edit, :id => mysql_logins(:one).to_param
     assert_response :success
   end
 
   test "should update mysql_login" do
-    put :update, :id => mysql_logins(:one).to_param, :mysql_login => { }
-    assert_redirected_to mysql_login_path(assigns(:mysql_login))
+    login_as users(:one)
+    put :update, :id => mysql_logins(:one).to_param, :mysql_login => { :password => 'y', :password_confirmation => 'y' }
+    assert_redirected_to :controller => 'mysql_logins', :action => 'index'
+  end
+
+  test "should refuse to update" do
+    login_as users(:two)
+    put :update, :id => mysql_logins(:one).to_param, :mysql_login => { :password => 'y', :password_confirmation => 'y' }
+    assert_redirected_to :controller => 'mysql_logins', :action => 'index'
+    assert flash[:error]
   end
 
   test "should destroy mysql_login" do
+    login_as users(:one)
     assert_difference('MysqlLogin.count', -1) do
       delete :destroy, :id => mysql_logins(:one).to_param
     end
 
-    assert_redirected_to mysql_logins_path
+    assert_redirected_to :controller => 'mysql_logins', :action => 'index'
   end
 end
+

@@ -16,46 +16,24 @@
 # along with this module. If not, see <http://www.gnu.org/licenses/>.
 
 require 'test_helper'
+
 class MysqlDatabasesControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:mysql_databases)
-  end
-
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
   test "should create mysql_database" do
+    login_as users(:one)
     assert_difference('MysqlDatabase.count') do
-      post :create, :mysql_database => { }
+      post :create, :mysql_database => { :name => 'new_db', :mysql_login_id => 1 }
     end
 
-    assert_redirected_to mysql_database_path(assigns(:mysql_database))
-  end
-
-  test "should show mysql_database" do
-    get :show, :id => mysql_databases(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => mysql_databases(:one).to_param
-    assert_response :success
-  end
-
-  test "should update mysql_database" do
-    put :update, :id => mysql_databases(:one).to_param, :mysql_database => { }
-    assert_redirected_to mysql_database_path(assigns(:mysql_database))
+    assert_redirected_to :controller => 'mysql_logins', :action => 'index'
   end
 
   test "should destroy mysql_database" do
+    login_as users(:one)
     assert_difference('MysqlDatabase.count', -1) do
       delete :destroy, :id => mysql_databases(:one).to_param
     end
 
-    assert_redirected_to mysql_databases_path
+    assert_redirected_to :controller => 'mysql_logins', :action => 'index'
   end
 end
+

@@ -17,8 +17,10 @@
 
 require 'test_helper'
 class MysqlControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "should get index" do
+    login_as users(:one)
+    get :index
+    assert_redirected_to :controller => :mysql_logins, :action => :index
   end
 end
+

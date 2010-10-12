@@ -16,9 +16,11 @@
 # along with this module. If not, see <http://www.gnu.org/licenses/>.
 
 require 'test_helper'
+
 class MysqlUserTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "valid fixtures" do
+    assert mysql_users(:one).valid?, "fixtures: one is invalid"
+    assert mysql_users(:two).valid?, "fixtures: two is invalid"
   end
 end
+

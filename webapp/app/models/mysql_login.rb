@@ -19,7 +19,9 @@ class MysqlLogin < ActiveRecord::Base
   belongs_to :mysql_user
   has_many :mysql_databases
 
+  validates_presence_of :mysql_user_id, :password, :username
   validates_uniqueness_of :username
+  validates_format_of :username, :with => /\A[a-z][a-z0-9_-]*\Z/
   validate :passwords_match
 
   attr_accessor :password_confirmation

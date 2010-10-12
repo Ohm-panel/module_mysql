@@ -24,21 +24,13 @@ class MysqlDatabasesController < MysqlController
     "MySQL"
   end
 
-  def edit
-    @database = MysqlDatabase.find(params[:id])
-
-    unless @database.mysql_login.mysql_user == @logged_mysql_user
-      flash[:error] = 'Invalid database'
-      redirect_to :controller => 'mysql_logins', :action => 'index'
-    end
-  end
-
   def create
     @database = MysqlDatabase.new(params[:mysql_database])
 
     unless @database.mysql_login.mysql_user == @logged_mysql_user
       flash[:error] = 'Invalid login'
       redirect_to :controller => 'mysql_logins', :action => 'index'
+      return
     end
 
     if @database.save
@@ -47,20 +39,6 @@ class MysqlDatabasesController < MysqlController
     else
       flash[:error] = "Cannot create dabase.<br/>Please try another name."
       redirect_to :controller => 'mysql_logins', :action => 'index'
-    end
-  end
-
-  def update
-    @database = MysqlDatabase.find(params[:id])
-
-    if not @database.mysql_login.mysql_user == @logged_mysql_user
-      flash[:error] = 'Invalid database'
-      redirect_to :controller => 'mysql_logins', :action => 'index'
-    elsif @database.update_attributes(params[:mysql_database])
-      flash[:notice] = @database.name + " was successfully updated.#{@@changes}"
-      redirect_to :controller => 'mysql_logins', :action => 'index'
-    else
-      render :action => 'edit'
     end
   end
 

@@ -37,6 +37,8 @@
 <% end %>
 
 <p>
+  <%= link_to (image_tag 'icons/icontexto-webdev-config-032x032.png', :alt => 'Edit', :title => 'Edit', :class => 'action') + 'Edit this login',
+               :controller => 'mysql_logins', :action => 'edit', :id => mysql_login.id %><br />
   <%= link_to (image_tag 'icons/icontexto-webdev-remove-032x032.png', :alt => '', :class => 'action') + 'Delete this login completely',
                {:controller => 'mysql_logins', :id => mysql_login.id, :action => 'destroy'},
                :confirm => 'ALL DATABASES for this login will be destroyed! Are you sure?' %>

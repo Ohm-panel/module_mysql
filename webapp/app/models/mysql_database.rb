@@ -19,5 +19,7 @@ class MysqlDatabase < ActiveRecord::Base
   belongs_to :mysql_login
 
   validates_uniqueness_of :name
+  validates_presence_of :name
+  validates_format_of :name, :with => /\A[a-z][a-z0-9_-]*\Z/
 end
 

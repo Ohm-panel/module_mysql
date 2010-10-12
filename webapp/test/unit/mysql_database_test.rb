@@ -16,9 +16,41 @@
 # along with this module. If not, see <http://www.gnu.org/licenses/>.
 
 require 'test_helper'
+
 class MysqlDatabaseTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "valid fixtures" do
+    assert mysql_databases(:one).valid?, "fixtures: one is invalid"
+    assert mysql_databases(:two).valid?, "fixtures: two is invalid"
+  end
+
+  test "invalid without name" do
+    db = MysqlDatabase.new
+    db.save
+    assert db.errors.invalid?(:name), "Blank name accepted"
+  end
+
+  test "name format" do
+    db = mysql_databases(:one)
+    db.name = "valid_dbname-ok"
+    assert db.valid?, "Good name rejected"
+
+    db.name = "000invalid_name"
+    db.save
+    assert db.errors.invalid?(:name), "Bad name accepted"
+
+    db.name = "invalid name"
+    db.save
+    assert db.errors.invalid?(:name), "Bad name accepted"
+
+    db.name = "invalid/name"
+    db.save
+    assert db.errors.invalid?(:name), "Bad name accepted"
+  end
+
+  test "name unique" do
+    db = MysqlDatabase.new(:name  => mysql_databases(:one).name)
+    db.save
+    assert db.errors.invalid?(:name), "Duplicate name accepted"
   end
 end
+

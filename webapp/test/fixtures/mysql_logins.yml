@@ -1,7 +1,12 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  mysql_user_id: 1
+  username: 'toto'
+  password: 'tata'
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+two:
+  id: 2
+  mysql_user_id: 2
+  username: 'tutu'
+  password: 'tata'
+

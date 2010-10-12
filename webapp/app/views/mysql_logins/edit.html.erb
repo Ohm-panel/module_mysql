@@ -1,0 +1,22 @@
+<%= image_tag "icons/icontexto-webdev-site-map-128x128.png", :alt=>"", :class=>"bigicon" %>
+<h1>Editing MySQL login '<%=h @login.username %>'</h1>
+
+<% form_for(@login, :url => { :controller => 'mysql_logins', :action => 'update', :id => @login.id }) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password, :value => '' %>
+  </p>
+  <p>
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, :value => '' %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to (image_tag 'icons/icontexto-webdev-arrow-left-032x032.png', :alt => '', :class => 'action') + 'Back',
+            :controller => 'mysql_logins', :action => 'index' %>
+
