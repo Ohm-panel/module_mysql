@@ -6,8 +6,13 @@
 </p>
 
 <p>
+  <%= link_to (image_tag 'icons/icontexto-webdev-arrow-right-032x032.png', :alt => '', :class => 'action') + 'Manage tables and data',
+               :controller => 'mysql', :action => 'sqlbuddy' %>
+</p>
+
+<p>
   <%= link_to (image_tag 'icons/icontexto-webdev-add-032x032.png', :alt => '', :class => 'action') + 'New login',
-              :controller => 'mysql_logins', :action => 'new' %>
+               :controller => 'mysql_logins', :action => 'new' %>
 </p>
 
 <% if @logins.count > 0 %>
