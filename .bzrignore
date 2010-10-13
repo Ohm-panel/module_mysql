@@ -1,15 +1,3 @@
-./.bzr/branch/branch.conf
-./.bzr/branch-format
-./.bzr/branch/format
-./.bzr/branch/last-revision
-./.bzr/branch/tags
-./.bzr/checkout/conflicts
-./.bzr/checkout/dirstate
-./.bzr/checkout/format
-./.bzr/checkout/views
-./.bzr/README
-./.bzr/repository/format
-./.bzr/repository/pack-names
 ./core_files
 core_files
 install
