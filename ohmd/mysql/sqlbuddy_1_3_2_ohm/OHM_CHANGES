@@ -1,0 +1,7 @@
+Changes:
+  login.php:81  "/";  =>  "/index.php";
+  login.php:221  Insert between </div> and </div>
+      <center><br /><br />
+	    <a href="/mysql"><big>Back to Ohm</big></a>
+	    </center>
+

@@ -70,5 +70,9 @@ class MysqlController < ApplicationController
   def showuser
     redirect_to :controller => 'mysql_users', :action => 'show', :user_id => params[:user_id]
   end
+
+  def sqlbuddy
+    redirect_to '/sqlbuddy/index.php'
+  end
 end
 

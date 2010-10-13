@@ -23,18 +23,21 @@ class Ohmd_mysql
     system "apt-get install -y mysql-server-5.1 mysql-client-5.1 php5-mysql" \
       or return false
 
-    # Listen on localhost only
-
     # Ask for root password
     root_pwd = nil
     while(root_pwd==nil) do
       print "Root MySQL password: "
-      root_pwd = readline
+      root_pwd = readline.strip
       unless(mysql_exec root_pwd, "SELECT 'Works!' as 'It'")
         root_pwd = nil
         puts "Sorry, try again"
       end
     end
+
+    # Install SQLBuddy
+    system "rm -rf /var/www/ohm/public/sqlbuddy"
+    system "chown -R www-data:www-data mysql/sqlbuddy_1_3_2_ohm"
+    system "mv mysql/sqlbuddy_1_3_2_ohm /var/www/ohm/public/sqlbuddy"
 
     true
   end
@@ -47,13 +50,17 @@ class Ohmd_mysql
 
   def self.exec
     # Check for orphan databases, logins and users first
-    MysqlDatabase.all.select { |d| d.user.nil? }.each do |orphan|
-      orphan.destroy
-    end
-    MysqlLogin.all.select { |l| l.user.nil? }.each do |orphan|
-      orphan.destroy
-    end
     MysqlUser.all.select { |u| u.user.nil? }.each do |orphan|
+      orphan.destroy
+    end
+    MysqlLogin.all.select { |l| l.mysql_user.nil? }.each do |orphan|
+      mysql_exec(root_pwd, "DROP USER '#{orphan.username}'")
+        or return false
+      orphan.destroy
+    end
+    MysqlDatabase.all.select { |d| d.mysql_login.nil? }.each do |orphan|
+      mysql_exec(root_pwd, "DROP DATABASE '#{orphan.name}'")
+        or return false
       orphan.destroy
     end
 
@@ -63,16 +70,21 @@ class Ohmd_mysql
     MysqlUser.all.each do |u|
       # Add logins
       u.mysql_logins.each do |l|
-        result = mysql_exec(root_pwd, "CREATE USER '#{l.username}' IDENTIFIED BY '#{l.password}'")
+        result = mysql_exec(root_pwd, "CREATE USER '#{l.username}' IDENTIFIED BY '#{l.password}'", true)
         unless result
-          result = mysql_exec(root_pwd, "SET PASSWORD FOR '#{l.username}' = password('#{l.password}')")
-          return false unless result
+          mysql_exec(root_pwd, "SET PASSWORD FOR '#{l.username}' = password('#{l.password}')")
+            or return false
         end
 
         # Add databases and privileges
         l.mysql_databases.each do |d|
-          mysql_exec(root_pwd, "CREATE DATABASE #{d.name}")
+          result = mysql_exec(root_pwd, "USE #{d.name}", true)
+          unless result
+            mysql_exec(root_pwd, "CREATE DATABASE #{d.name}")
+              or return false
+          end
           mysql_exec(root_pwd, "GRANT ALL PRIVILEGES ON #{d.name}.* TO #{l.username}")
+            or return false
         end
       end
     end
@@ -81,9 +93,13 @@ class Ohmd_mysql
 
 private
 
-  def self.mysql_exec password, command
+  def self.mysql_exec password, command, quiet=false
+    log = ""
+    if quiet
+      log = "> /dev/null 2>&1"
+    end
     command = command.split('"').join('\\"')
-    system("mysql -u root -p#{password} -D mysql -e \"#{command}\"")
+    system("mysql -u root -p#{password} -D mysql -e \"#{command}\" #{log}")
   end
 end
 
