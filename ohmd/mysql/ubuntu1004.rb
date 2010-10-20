@@ -54,12 +54,12 @@ class Ohmd_mysql
       orphan.destroy
     end
     MysqlLogin.all.select { |l| l.mysql_user.nil? }.each do |orphan|
-      mysql_exec(root_pwd, "DROP USER '#{orphan.username}'")
+      mysql_exec(root_pwd, "DROP USER '#{orphan.username}'") \
         or return false
       orphan.destroy
     end
     MysqlDatabase.all.select { |d| d.mysql_login.nil? }.each do |orphan|
-      mysql_exec(root_pwd, "DROP DATABASE '#{orphan.name}'")
+      mysql_exec(root_pwd, "DROP DATABASE '#{orphan.name}'") \
         or return false
       orphan.destroy
     end
@@ -72,7 +72,7 @@ class Ohmd_mysql
       u.mysql_logins.each do |l|
         result = mysql_exec(root_pwd, "CREATE USER '#{l.username}' IDENTIFIED BY '#{l.password}'", true)
         unless result
-          mysql_exec(root_pwd, "SET PASSWORD FOR '#{l.username}' = password('#{l.password}')")
+          mysql_exec(root_pwd, "SET PASSWORD FOR '#{l.username}' = password('#{l.password}')") \
             or return false
         end
 
@@ -80,10 +80,10 @@ class Ohmd_mysql
         l.mysql_databases.each do |d|
           result = mysql_exec(root_pwd, "USE #{d.name}", true)
           unless result
-            mysql_exec(root_pwd, "CREATE DATABASE #{d.name}")
+            mysql_exec(root_pwd, "CREATE DATABASE #{d.name}") \
               or return false
           end
-          mysql_exec(root_pwd, "GRANT ALL PRIVILEGES ON #{d.name}.* TO #{l.username}")
+          mysql_exec(root_pwd, "GRANT ALL PRIVILEGES ON #{d.name}.* TO #{l.username}") \
             or return false
         end
       end
