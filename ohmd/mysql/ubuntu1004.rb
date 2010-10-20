@@ -99,7 +99,7 @@ private
       log = "> /dev/null 2>&1"
     end
     command = command.split('"').join('\\"')
-    system("mysql -u root -p#{password} -D mysql -e \"#{command}\" #{log}")
+    system("mysql -u root -p\"#{password}\" -D mysql -e \"#{command}\" #{log}")
   end
 end
 
