@@ -1,4 +1,4 @@
-### Ohm MySQL module ###
+### Ohm MySQL module <http://joelcogen.com/projects/ohm/> ###
 #
 # Databases controller
 #

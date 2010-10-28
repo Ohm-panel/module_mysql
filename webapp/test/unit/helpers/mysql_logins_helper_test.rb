@@ -1,4 +1,4 @@
-### Ohm MySQL module ###
+### Ohm MySQL module <http://joelcogen.com/projects/ohm/> ###
 #
 # Copyright (C) 2010 Joel Cogen <http://joelcogen.com>
 #
